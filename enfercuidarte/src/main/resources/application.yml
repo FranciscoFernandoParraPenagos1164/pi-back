@@ -1,0 +1,7 @@
+micronaut:
+  application:
+    name: enfercuidarte
+netty:
+  default:
+    allocator:
+      max-order: 3
