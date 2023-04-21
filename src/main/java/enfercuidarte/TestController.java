@@ -14,4 +14,9 @@ public class TestController {
     public String getNombre(@PathVariable String name) {
         return "hola " + name;
     }
+
+    @Post(uri = "/", produces = "text/plain")
+    public String postNombre() {
+        return "Creando usuario";
+    }
 }
