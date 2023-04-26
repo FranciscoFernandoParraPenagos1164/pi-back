@@ -1,6 +1,0 @@
-applicationType: default
-defaultPackage: enfercuidarte
-testFramework: junit
-sourceLanguage: java
-buildTool: gradle
-features: [app-name, gradle, http-client, jackson-databind, java, java-application, junit, logback, micronaut-build, netty-server, readme, shade, yaml]
