@@ -3,12 +3,11 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const POOL_CONFIG = {
-  host: 'localhost',
-  user: 'root',
-  password: 'fr4nc1sc01164',
-  port: '3306',
-  database: 'cronogramaenfercuidartedb'
+  host: process.env.DATABASE_HOST || 'localhost',
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  port: process.env.DATABASE_PORT || '3306',
+  database: process.env.DATABASE_NAME
 }
 
-console.log(POOL_CONFIG)
-export const pool = createPool(POOL_CONFIG)
+export const pool = createPool(POOL_CONFIG).promise()
