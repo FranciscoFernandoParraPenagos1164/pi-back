@@ -12,7 +12,7 @@ export function getPatients(req, res, next) {
     })
     .then((rows) => {
       if (rows.length === 0) {
-        return res.status(404).end()
+        return res.status(204).end()
       }
 
       const query = 'SELECT * FROM condicion_medica WHERE cod_paciente = ?'
@@ -44,7 +44,7 @@ export function getPatient(req, res, next) {
     })
     .then(([rows]) => {
       if (!rows) {
-        return res.status(404).end()
+        return res.status(204).end()
       }
 
       const query = 'SELECT * FROM condicion_medica WHERE cod_paciente = ?'
@@ -71,12 +71,13 @@ export function postPatient(req, res, next) {
     .query(query, newPatient)
     .then(() => {
       console.log(`creating patient ${id} at ${new Date()}`)
-      res.status(201)
-      if (conditions.length === 0) {
-        return res.json(newPatient)
-      }
     })
     .then(() => {
+      if (conditions.length === 0) {
+        res.status(201)
+        return res.json(newPatient)
+      }
+
       const medicalConditions = conditions.map((condition) => {
         const conditionID = uuidv4()
         return [conditionID, id, condition]
@@ -94,14 +95,22 @@ export function postPatient(req, res, next) {
 
 export function patchPatient(req, res, next) {
   const body = { ...req.body }
+  if (body.cod_paciente || body.documento_identidad) {
+    next({
+      code: 'NON_MODIFICABLE_PROPERTY',
+      sqlMessage:
+        "the property 'paciente.cod_paciente' and 'paciente.documento_identidad' are not modificable"
+    })
+    return
+  }
+
   const newInfo = Object.entries(body)
   const { id } = req.params
-  const query = `UPDATE paciente SET
-  ${newInfo.map(
+  const values = newInfo.map(
     ([key, value]) =>
       `${key} = ${typeof value === 'string' ? `'${value}'` : `${value}`}`
-  )}
-  WHERE documento_identidad = '${id}'`
+  )
+  const query = `UPDATE paciente SET ${values} WHERE documento_identidad = '${id}'`
 
   pool
     .query(query, newInfo)
@@ -109,9 +118,9 @@ export function patchPatient(req, res, next) {
       console.log(`updating patient ${id} at ${new Date()}`)
       const { changedRows } = rows
       if (changedRows === 0) {
-        return res.status(404).end()
+        return res.status(204).end()
       }
-      res.status(200)
+      res.status(201)
       return res.json(body)
     })
     .catch(next)
@@ -124,12 +133,12 @@ export function deletePatient(req, res, next) {
   pool
     .query(query)
     .then(([fields]) => {
-      const { affectedRows } = fields
       console.log(`deleting patient ${id} at ${new Date()}`)
+      const { affectedRows } = fields
       if (affectedRows <= 0) {
-        return res.status(404).end()
+        return res.status(204).end()
       }
-      return res.status(204).end()
+      return res.status(200).end()
     })
     .catch(next)
 }
