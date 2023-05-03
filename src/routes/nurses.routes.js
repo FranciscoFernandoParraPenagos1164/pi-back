@@ -5,7 +5,7 @@ import {
   postNurse,
   patchNurse,
   deleteNurse
-} from '../controllers/nurse.controllers.js'
+} from '../controllers/nurses.controllers.js'
 
 const router = Router()
 

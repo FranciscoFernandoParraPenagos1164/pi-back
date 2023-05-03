@@ -5,7 +5,7 @@ import {
   postCondition,
   patchCondition,
   deleteCondition
-} from '../controllers/medicalCondition.controllers.js'
+} from '../controllers/medicalConditions.controllers.js'
 
 const router = Router()
 
