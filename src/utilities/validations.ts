@@ -1,6 +1,13 @@
 import { NextFunction } from 'express'
 
 export class Validations {
+  public static validateEmptyBody(body: Object): boolean {
+    if (!body || Object.entries(body).length === 0) {
+      return false
+    }
+    return true
+  }
+
   public static validateBody<T>(
     validatePropertyes: Array<string>,
     body: T,

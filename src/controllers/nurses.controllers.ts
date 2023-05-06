@@ -101,7 +101,7 @@ export default class Nurses implements IControllers {
     if (body.cod_enfermero || body.documento_identidad) {
       next({
         code: 'PROPERTY_UNCHANGEABLE',
-        sqlMessage:
+        message:
           'the key cod_enfermero and documento_identidad are not modificable'
       })
       return

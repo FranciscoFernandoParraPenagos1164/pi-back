@@ -153,7 +153,7 @@ export default class Patients implements IControllers {
     if (body.cod_paciente || body.documento_identidad) {
       next({
         code: 'PROPERTY_UNCHANGEABLE',
-        sqlMessage:
+        message:
           'the key cod_paciente and documento_identidad are not modificable'
       })
       return

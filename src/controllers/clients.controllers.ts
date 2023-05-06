@@ -101,7 +101,7 @@ export default class Clients implements IControllers {
     if (body.cod_cliente || body.documento_identidad) {
       next({
         code: 'PROPERTY_UNCHANGEABLE',
-        sqlMessage:
+        message:
           'the key cod_cliente and documento_identidad are not modificable'
       })
       return

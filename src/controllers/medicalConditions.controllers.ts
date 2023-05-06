@@ -103,7 +103,7 @@ export default class MedicalConditions implements IControllers {
     if (body.cod_condicion_medica || body.cod_paciente) {
       next({
         code: 'PROPERTY_UNCHANGEABLE',
-        sqlMessage:
+        message:
           'the key cod_condicion_medica and cod_paciente are not modificable'
       })
       return
