@@ -54,18 +54,11 @@ export default class MedicalConditions implements IControllers {
     const isValid: Boolean = Validations.validateBody<IMedicalConditions>(
       this.validatePropertyes,
       body,
-      next
+      next,
+      ['cod_condicion_medica']
     )
 
     if (!isValid) {
-      return
-    }
-
-    if (body.cod_condicion_medica) {
-      next({
-        code: 'PROPERTY_UNCHANGEABLE',
-        message: 'the key cod_condicion_medica is managed by the server'
-      })
       return
     }
 
@@ -93,19 +86,11 @@ export default class MedicalConditions implements IControllers {
     const isValid: Boolean = Validations.validateBody<IMedicalConditions>(
       this.validatePropertyes,
       body,
-      next
+      next,
+      ['cod_condicion_medica', 'cod_paciente']
     )
 
     if (!isValid) {
-      return
-    }
-
-    if (body.cod_condicion_medica || body.cod_paciente) {
-      next({
-        code: 'PROPERTY_UNCHANGEABLE',
-        message:
-          'the key cod_condicion_medica and cod_paciente are not modificable'
-      })
       return
     }
 

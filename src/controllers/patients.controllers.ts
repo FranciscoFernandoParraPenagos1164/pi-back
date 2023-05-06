@@ -85,18 +85,11 @@ export default class Patients implements IControllers {
     const isValid: Boolean = Validations.validateBody<IPatients>(
       Patients.validatePropertyes,
       body,
-      next
+      next,
+      ['cod_paciente']
     )
 
     if (!isValid) {
-      return
-    }
-
-    if (body.cod_paciente) {
-      next({
-        code: 'NO_VALID_PROPERTY',
-        message: 'the key cod_paciente is managed by the server'
-      })
       return
     }
 
@@ -143,19 +136,11 @@ export default class Patients implements IControllers {
     const isValid: Boolean = Validations.validateBody<IPatients>(
       Patients.validatePropertyes,
       body,
-      next
+      next,
+      ['cod_paciente', 'documento_identidad']
     )
 
     if (!isValid) {
-      return
-    }
-
-    if (body.cod_paciente || body.documento_identidad) {
-      next({
-        code: 'PROPERTY_UNCHANGEABLE',
-        message:
-          'the key cod_paciente and documento_identidad are not modificable'
-      })
       return
     }
 

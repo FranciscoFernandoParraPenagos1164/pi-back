@@ -55,16 +55,9 @@ export default class Clients implements IControllers {
     const isValid: Boolean = Validations.validateBody<IClient>(
       Clients.validatePropertyes,
       body,
-      next
+      next,
+      ['cod_cliente']
     )
-
-    if (body.cod_cliente) {
-      next({
-        code: 'NO_VALID_PROPERTY',
-        message: 'the key cod_cliente is managed by the server'
-      })
-      return
-    }
 
     if (!isValid) {
       return
@@ -91,19 +84,11 @@ export default class Clients implements IControllers {
     const isValid: Boolean = Validations.validateBody<IClient>(
       Clients.validatePropertyes,
       body,
-      next
+      next,
+      ['cod_cliente', 'documento_identidad']
     )
 
     if (!isValid) {
-      return
-    }
-
-    if (body.cod_cliente || body.documento_identidad) {
-      next({
-        code: 'PROPERTY_UNCHANGEABLE',
-        message:
-          'the key cod_cliente and documento_identidad are not modificable'
-      })
       return
     }
 

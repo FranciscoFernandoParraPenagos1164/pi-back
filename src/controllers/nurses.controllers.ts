@@ -55,16 +55,9 @@ export default class Nurses implements IControllers {
     const isValid: Boolean = Validations.validateBody<INurses>(
       Nurses.validatePropertyes,
       body,
-      next
+      next,
+      ['cod_enfermero']
     )
-
-    if (body.cod_enfermero) {
-      next({
-        code: 'NO_VALID_PROPERTY',
-        message: 'the key cod_enfermero is managed by the server'
-      })
-      return
-    }
 
     if (!isValid) {
       return
@@ -91,19 +84,11 @@ export default class Nurses implements IControllers {
     const isValid: Boolean = Validations.validateBody<INurses>(
       Nurses.validatePropertyes,
       body,
-      next
+      next,
+      ['cod_enfermero', 'documento_identidad']
     )
 
     if (!isValid) {
-      return
-    }
-
-    if (body.cod_enfermero || body.documento_identidad) {
-      next({
-        code: 'PROPERTY_UNCHANGEABLE',
-        message:
-          'the key cod_enfermero and documento_identidad are not modificable'
-      })
       return
     }
 

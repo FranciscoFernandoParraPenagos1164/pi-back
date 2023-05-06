@@ -11,12 +11,21 @@ export class Validations {
   public static validateBody<T>(
     validatePropertyes: Array<string>,
     body: T,
-    next: NextFunction
+    next: NextFunction,
+    excludePropertyes?: Array<string>
   ): Boolean {
-    const values = Object.entries(body)
+    const entries = Object.entries(body)
 
-    for (let i = 0; i < values.length; i++) {
-      const [key, value] = values[i]
+    for (let values of entries) {
+      const [key, value] = values
+
+      if (excludePropertyes.includes(key)) {
+        next({
+          code: 'NO_VALID_PROPERTY',
+          message: `the key ${key} is managed by the server or is not modificable`
+        })
+        return false
+      }
 
       if (!validatePropertyes.includes(key)) {
         next({
