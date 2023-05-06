@@ -4,17 +4,17 @@ import { v4 as uuidv4 } from 'uuid'
 import { pool } from '../connection'
 import { Validations } from '../utilities/validations'
 import { IControllers } from '../interfaces/IController'
-import { IClient } from '../interfaces/IClients'
+import { INurses } from '../interfaces/INurses'
 
-export default class Clients implements IControllers {
+export default class Nurses implements IControllers {
   public get(_req: Request, res: Response, next: NextFunction): void {
-    const query = 'SELECT * FROM cliente'
+    const query = 'SELECT * FROM enfermero'
 
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`listing all clients at ${new Date()}`)
-        const rows: Array<IClient> = response[0]
+        console.log(`listing all nurses at ${new Date()}`)
+        const rows: Array<INurses> = response[0]
 
         if (rows.length === 0) {
           res.status(204).end()
@@ -30,13 +30,13 @@ export default class Clients implements IControllers {
   public getById(_req: Request, res: Response, next: NextFunction): void {
     const { id } = _req.params
 
-    const query = `SELECT * FROM cliente WHERE documento_identidad = '${id}'`
+    const query = `SELECT * FROM enfermero WHERE documento_identidad = '${id}'`
 
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`searching client ${id} at ${new Date()}`)
-        const rows: Array<IClient> = response[0]
+        console.log(`searching nurse ${id} at ${new Date()}`)
+        const rows: Array<INurses> = response[0]
 
         if (rows.length === 0) {
           res.status(204).end()
@@ -50,18 +50,18 @@ export default class Clients implements IControllers {
   }
 
   public post(_req: Request, res: Response, next: NextFunction): void {
-    const body: IClient = { ..._req.body }
+    const body: INurses = { ..._req.body }
 
-    const isValid: Boolean = Validations.validateBody<IClient>(
-      Clients.validatePropertyes,
+    const isValid: Boolean = Validations.validateBody<INurses>(
+      Nurses.validatePropertyes,
       body,
       next
     )
 
-    if (body.cod_cliente) {
+    if (body.cod_enfermero) {
       next({
         code: 'NO_VALID_PROPERTY',
-        message: 'the key cod_cliente is managed by the server'
+        message: 'the key cod_enfermero is managed by the server'
       })
       return
     }
@@ -71,25 +71,25 @@ export default class Clients implements IControllers {
     }
 
     const id = uuidv4()
-    const newClient: IClient = { cod_cliente: id, ...body }
-    const query = 'INSERT INTO cliente SET ?'
+    const newNurse: INurses = { cod_enfermero: id, ...body }
+    const query = 'INSERT INTO enfermero SET ?'
 
     pool
-      .query(query, newClient)
+      .query(query, newNurse)
       .then(() => {
-        console.log(`creating client ${id} at ${new Date()}`)
+        console.log(`creating nurse ${id} at ${new Date()}`)
 
         res.status(201)
-        res.json(newClient)
+        res.json(newNurse)
       })
       .catch(next)
   }
 
   public patch(_req: Request, res: Response, next: NextFunction): void {
-    const body: IClient = { ..._req.body }
+    const body: INurses = { ..._req.body }
 
-    const isValid: Boolean = Validations.validateBody<IClient>(
-      Clients.validatePropertyes,
+    const isValid: Boolean = Validations.validateBody<INurses>(
+      Nurses.validatePropertyes,
       body,
       next
     )
@@ -98,11 +98,11 @@ export default class Clients implements IControllers {
       return
     }
 
-    if (body.cod_cliente || body.documento_identidad) {
+    if (body.cod_enfermero || body.documento_identidad) {
       next({
         code: 'PROPERTY_UNCHANGEABLE',
         message:
-          'the key cod_cliente and documento_identidad are not modificable'
+          'the key cod_enfermero and documento_identidad are not modificable'
       })
       return
     }
@@ -115,12 +115,12 @@ export default class Clients implements IControllers {
         `${key} = ${typeof value === 'string' ? `'${value}'` : `${value}`}`
     )
 
-    const query = `UPDATE cliente SET ${values} WHERE documento_identidad = '${id}'`
+    const query = `UPDATE enfermero SET ${values} WHERE documento_identidad = '${id}'`
 
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`updating client ${id} at ${new Date()}`)
+        console.log(`updating nurse ${id} at ${new Date()}`)
 
         const { changedRows } = response[0]
 
@@ -138,12 +138,12 @@ export default class Clients implements IControllers {
   public delete(_req: Request, res: Response, next: NextFunction): void {
     const { id } = _req.params
 
-    const query = `DELETE FROM cliente WHERE documento_identidad = '${id}'`
+    const query = `DELETE FROM enfermero WHERE documento_identidad = '${id}'`
 
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`deleting client ${id} at ${new Date()}`)
+        console.log(`deleting nurse ${id} at ${new Date()}`)
 
         const { affectedRows } = response[0]
 
@@ -158,6 +158,8 @@ export default class Clients implements IControllers {
   }
 
   private static validatePropertyes: Array<string> = [
+    'especialidad',
+    'titulo',
     'email',
     'celular',
     'primer_nombre',

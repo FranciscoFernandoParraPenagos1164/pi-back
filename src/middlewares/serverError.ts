@@ -12,7 +12,8 @@ export default function serverError(
   const validErrors = [
     'PROPERTY_UNCHANGEABLE',
     'NO_VALID_PROPERTY',
-    'NO_EMPTY_PROPERTY'
+    'NO_EMPTY_PROPERTY',
+    'NO_EMPTY_CONTENT'
   ]
 
   if (!validErrors.includes(code)) {
