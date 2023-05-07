@@ -13,7 +13,9 @@ export default class MedicalConditions implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`listing all medical conditions at ${new Date()}`)
+        console.log(
+          `listing all medical conditions at ${new Date().toLocaleString()}`
+        )
         const rows: Array<IMedicalConditions> = response[0]
 
         if (rows.length === 0) {
@@ -33,7 +35,9 @@ export default class MedicalConditions implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`searching medical condition ${id} at ${new Date()}`)
+        console.log(
+          `searching medical condition ${id} at ${new Date().toLocaleString()}`
+        )
         const rows: Array<IMedicalConditions> = response[0]
 
         if (rows.length === 0) {
@@ -54,18 +58,11 @@ export default class MedicalConditions implements IControllers {
     const isValid: Boolean = Validations.validateBody<IMedicalConditions>(
       this.validatePropertyes,
       body,
-      next
+      next,
+      ['cod_condicion_medica']
     )
 
     if (!isValid) {
-      return
-    }
-
-    if (body.cod_condicion_medica) {
-      next({
-        code: 'PROPERTY_UNCHANGEABLE',
-        message: 'the key cod_condicion_medica is managed by the server'
-      })
       return
     }
 
@@ -79,7 +76,9 @@ export default class MedicalConditions implements IControllers {
     pool
       .query(query, newCondition)
       .then(() => {
-        console.log(`creating medical condition ${id} at ${new Date()}`)
+        console.log(
+          `creating medical condition ${id} at ${new Date().toLocaleString()}`
+        )
 
         res.status(201)
         res.json(newCondition)
@@ -93,19 +92,11 @@ export default class MedicalConditions implements IControllers {
     const isValid: Boolean = Validations.validateBody<IMedicalConditions>(
       this.validatePropertyes,
       body,
-      next
+      next,
+      ['cod_condicion_medica', 'cod_paciente']
     )
 
     if (!isValid) {
-      return
-    }
-
-    if (body.cod_condicion_medica || body.cod_paciente) {
-      next({
-        code: 'PROPERTY_UNCHANGEABLE',
-        message:
-          'the key cod_condicion_medica and cod_paciente are not modificable'
-      })
       return
     }
 
@@ -122,7 +113,9 @@ export default class MedicalConditions implements IControllers {
     pool
       .query(query)
       .then((rows: RowDataPacket) => {
-        console.log(`updating medical condition ${id} at ${new Date()}`)
+        console.log(
+          `updating medical condition ${id} at ${new Date().toLocaleString()}`
+        )
 
         const { changedRows } = rows[0]
 
@@ -145,7 +138,9 @@ export default class MedicalConditions implements IControllers {
     pool
       .query(query)
       .then((rows: RowDataPacket) => {
-        console.log(`deleting medical condition ${id} at ${new Date()}`)
+        console.log(
+          `deleting medical condition ${id} at ${new Date().toLocaleString()}`
+        )
 
         const { affectedRows } = rows[0]
 

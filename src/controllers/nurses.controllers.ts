@@ -13,7 +13,7 @@ export default class Nurses implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`listing all nurses at ${new Date()}`)
+        console.log(`listing all nurses at ${new Date().toLocaleString()}`)
         const rows: Array<INurses> = response[0]
 
         if (rows.length === 0) {
@@ -35,7 +35,7 @@ export default class Nurses implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`searching nurse ${id} at ${new Date()}`)
+        console.log(`searching nurse ${id} at ${new Date().toLocaleString()}`)
         const rows: Array<INurses> = response[0]
 
         if (rows.length === 0) {
@@ -55,16 +55,9 @@ export default class Nurses implements IControllers {
     const isValid: Boolean = Validations.validateBody<INurses>(
       Nurses.validatePropertyes,
       body,
-      next
+      next,
+      ['cod_enfermero']
     )
-
-    if (body.cod_enfermero) {
-      next({
-        code: 'NO_VALID_PROPERTY',
-        message: 'the key cod_enfermero is managed by the server'
-      })
-      return
-    }
 
     if (!isValid) {
       return
@@ -77,7 +70,7 @@ export default class Nurses implements IControllers {
     pool
       .query(query, newNurse)
       .then(() => {
-        console.log(`creating nurse ${id} at ${new Date()}`)
+        console.log(`creating nurse ${id} at ${new Date().toLocaleString()}`)
 
         res.status(201)
         res.json(newNurse)
@@ -91,19 +84,11 @@ export default class Nurses implements IControllers {
     const isValid: Boolean = Validations.validateBody<INurses>(
       Nurses.validatePropertyes,
       body,
-      next
+      next,
+      ['cod_enfermero', 'documento_identidad']
     )
 
     if (!isValid) {
-      return
-    }
-
-    if (body.cod_enfermero || body.documento_identidad) {
-      next({
-        code: 'PROPERTY_UNCHANGEABLE',
-        message:
-          'the key cod_enfermero and documento_identidad are not modificable'
-      })
       return
     }
 
@@ -120,7 +105,7 @@ export default class Nurses implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`updating nurse ${id} at ${new Date()}`)
+        console.log(`updating nurse ${id} at ${new Date().toLocaleString()}`)
 
         const { changedRows } = response[0]
 
@@ -143,7 +128,7 @@ export default class Nurses implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`deleting nurse ${id} at ${new Date()}`)
+        console.log(`deleting nurse ${id} at ${new Date().toLocaleString()}`)
 
         const { affectedRows } = response[0]
 

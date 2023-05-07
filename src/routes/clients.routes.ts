@@ -1,4 +1,4 @@
-import { Router, IRouter } from 'express'
+import { IRouter, Router } from 'express'
 import Clients from '../controllers/clients.controllers'
 
 const router: IRouter = Router()

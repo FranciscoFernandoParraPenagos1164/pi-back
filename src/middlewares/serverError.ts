@@ -13,7 +13,8 @@ export default function serverError(
     'PROPERTY_UNCHANGEABLE',
     'NO_VALID_PROPERTY',
     'NO_EMPTY_PROPERTY',
-    'NO_EMPTY_CONTENT'
+    'NO_EMPTY_CONTENT',
+    'NO_FREE_NURSE'
   ]
 
   if (!validErrors.includes(code)) {
