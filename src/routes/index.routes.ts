@@ -1,5 +1,5 @@
 import { Router, IRouter } from 'express'
-import { Index } from '../controllers/index.controllers'
+import Index from '../controllers/index.controllers'
 
 const router: IRouter = Router()
 const index = new Index()

@@ -13,7 +13,7 @@ export default class Nurses implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`listing all nurses at ${new Date()}`)
+        console.log(`listing all nurses at ${new Date().toLocaleString()}`)
         const rows: Array<INurses> = response[0]
 
         if (rows.length === 0) {
@@ -35,7 +35,7 @@ export default class Nurses implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`searching nurse ${id} at ${new Date()}`)
+        console.log(`searching nurse ${id} at ${new Date().toLocaleString()}`)
         const rows: Array<INurses> = response[0]
 
         if (rows.length === 0) {
@@ -70,7 +70,7 @@ export default class Nurses implements IControllers {
     pool
       .query(query, newNurse)
       .then(() => {
-        console.log(`creating nurse ${id} at ${new Date()}`)
+        console.log(`creating nurse ${id} at ${new Date().toLocaleString()}`)
 
         res.status(201)
         res.json(newNurse)
@@ -105,7 +105,7 @@ export default class Nurses implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`updating nurse ${id} at ${new Date()}`)
+        console.log(`updating nurse ${id} at ${new Date().toLocaleString()}`)
 
         const { changedRows } = response[0]
 
@@ -128,7 +128,7 @@ export default class Nurses implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`deleting nurse ${id} at ${new Date()}`)
+        console.log(`deleting nurse ${id} at ${new Date().toLocaleString()}`)
 
         const { affectedRows } = response[0]
 

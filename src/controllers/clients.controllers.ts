@@ -13,7 +13,7 @@ export default class Clients implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`listing all clients at ${new Date()}`)
+        console.log(`listing all clients at ${new Date().toLocaleString()}`)
         const rows: Array<IClient> = response[0]
 
         if (rows.length === 0) {
@@ -35,7 +35,7 @@ export default class Clients implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`searching client ${id} at ${new Date()}`)
+        console.log(`searching client ${id} at ${new Date().toLocaleString()}`)
         const rows: Array<IClient> = response[0]
 
         if (rows.length === 0) {
@@ -70,7 +70,7 @@ export default class Clients implements IControllers {
     pool
       .query(query, newClient)
       .then(() => {
-        console.log(`creating client ${id} at ${new Date()}`)
+        console.log(`creating client ${id} at ${new Date().toLocaleString()}`)
 
         res.status(201)
         res.json(newClient)
@@ -105,7 +105,7 @@ export default class Clients implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`updating client ${id} at ${new Date()}`)
+        console.log(`updating client ${id} at ${new Date().toLocaleString()}`)
 
         const { changedRows } = response[0]
 
@@ -128,7 +128,7 @@ export default class Clients implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`deleting client ${id} at ${new Date()}`)
+        console.log(`deleting client ${id} at ${new Date().toLocaleString()}`)
 
         const { affectedRows } = response[0]
 

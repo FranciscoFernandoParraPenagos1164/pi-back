@@ -9,7 +9,11 @@ export default function sqlError(
 ): void {
   const { code, message } = err
 
-  const validErrors = ['ER_DUP_ENTRY', 'ER_NO_DEFAULT_FOR_FIELD']
+  const validErrors = [
+    'ER_DUP_ENTRY',
+    'ER_NO_DEFAULT_FOR_FIELD',
+    'ER_TRUNCATED_WRONG_VALUE'
+  ]
 
   if (!validErrors.includes(code)) {
     next(err)

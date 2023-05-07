@@ -13,7 +13,9 @@ export default class MedicalConditions implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`listing all medical conditions at ${new Date()}`)
+        console.log(
+          `listing all medical conditions at ${new Date().toLocaleString()}`
+        )
         const rows: Array<IMedicalConditions> = response[0]
 
         if (rows.length === 0) {
@@ -33,7 +35,9 @@ export default class MedicalConditions implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`searching medical condition ${id} at ${new Date()}`)
+        console.log(
+          `searching medical condition ${id} at ${new Date().toLocaleString()}`
+        )
         const rows: Array<IMedicalConditions> = response[0]
 
         if (rows.length === 0) {
@@ -72,7 +76,9 @@ export default class MedicalConditions implements IControllers {
     pool
       .query(query, newCondition)
       .then(() => {
-        console.log(`creating medical condition ${id} at ${new Date()}`)
+        console.log(
+          `creating medical condition ${id} at ${new Date().toLocaleString()}`
+        )
 
         res.status(201)
         res.json(newCondition)
@@ -107,7 +113,9 @@ export default class MedicalConditions implements IControllers {
     pool
       .query(query)
       .then((rows: RowDataPacket) => {
-        console.log(`updating medical condition ${id} at ${new Date()}`)
+        console.log(
+          `updating medical condition ${id} at ${new Date().toLocaleString()}`
+        )
 
         const { changedRows } = rows[0]
 
@@ -130,7 +138,9 @@ export default class MedicalConditions implements IControllers {
     pool
       .query(query)
       .then((rows: RowDataPacket) => {
-        console.log(`deleting medical condition ${id} at ${new Date()}`)
+        console.log(
+          `deleting medical condition ${id} at ${new Date().toLocaleString()}`
+        )
 
         const { affectedRows } = rows[0]
 
