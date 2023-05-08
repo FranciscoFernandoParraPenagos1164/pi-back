@@ -8,6 +8,8 @@ import patientsRoutes from './routes/patients.routes'
 import medicalConditions from './routes/medicalConditions.routes'
 import nursesRoutes from './routes/nurses.routes'
 import apointmentsRoutes from './routes/apointments.routes'
+import extensionsRoutes from './routes/extensions.routes'
+import visitsRoutes from './routes/visits.routes'
 import sqlError from './middlewares/sqlError'
 import serverError from './middlewares/serverError'
 
@@ -24,6 +26,8 @@ app.use('/patients', patientsRoutes)
 app.use('/medical-conditions', medicalConditions)
 app.use('/nurses', nursesRoutes)
 app.use('/apointments', apointmentsRoutes)
+app.use('/extensions', extensionsRoutes)
+app.use('/visits', visitsRoutes)
 app.use(serverError)
 app.use(sqlError)
 
