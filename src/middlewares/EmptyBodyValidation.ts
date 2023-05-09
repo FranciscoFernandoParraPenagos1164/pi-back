@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { Validations } from '../utilities/validations'
 
-export default function (_req: Request, _res: Response, next: NextFunction) {
+export default function emptyBodyValidation(_req: Request, _res: Response, next: NextFunction) {
   const isEmpty = Validations.validateEmptyBody(_req.body)
 
   if (_req.method === 'GET' || _req.method === 'DELETE') {
