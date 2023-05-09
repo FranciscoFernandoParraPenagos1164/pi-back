@@ -2,6 +2,7 @@ import express = require('express')
 import { Express } from 'express'
 import { config } from 'dotenv'
 import validateEmptyBody from './middlewares/EmptyBodyValidation'
+import validateAPIKEY from './middlewares/validateAPIKEY'
 import indexRoutes from './routes/index.routes'
 import clientsRoutes from './routes/clients.routes'
 import patientsRoutes from './routes/patients.routes'
@@ -18,6 +19,7 @@ config()
 const app: Express = express()
 const PORT = process.env.APPLICATION_PORT || 3050
 
+app.use(validateAPIKEY)
 app.use(express.json())
 app.use(validateEmptyBody)
 app.use(indexRoutes)
