@@ -10,7 +10,7 @@ Para probar el funcionamiento de nuestro proyecto, podemos realizar la descarga 
 
 Para poder ejecutar la aplicacion de forma local se tiene que declarar unas variables de entorno, para esto se debe crear un archivo llamado **.env** en la raiz del proyecto y declarar las siguientes variables de entorno
 
-- APLICATION_PORT = el puerto en el que queremos que se ejecute nuestra aplicacion
+- APPLICATION_PORT = el puerto en el que queremos que se ejecute nuestra aplicacion
 - DATABASE_HOST = el host de nuestra base de datos mysql
 - DATABASE_USER = el usuario de nuestra base de datos
 - DATABASE_PASSWORD = la contraseña del usuario de nuestra base de datos
