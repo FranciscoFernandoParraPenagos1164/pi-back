@@ -11,6 +11,7 @@ import nursesRoutes from './routes/nurses.routes'
 import apointmentsRoutes from './routes/apointments.routes'
 import extensionsRoutes from './routes/extensions.routes'
 import visitsRoutes from './routes/visits.routes'
+import notesRoutes from './routes/notes.routes'
 import sqlError from './middlewares/sqlError'
 import serverError from './middlewares/serverError'
 
@@ -30,6 +31,7 @@ app.use('/nurses', nursesRoutes)
 app.use('/apointments', apointmentsRoutes)
 app.use('/extensions', extensionsRoutes)
 app.use('/visits', visitsRoutes)
+app.use('/notes', notesRoutes)
 app.use(serverError)
 app.use(sqlError)
 
