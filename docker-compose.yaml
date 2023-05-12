@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  enfercuidarte-back-end:
+    build: .
+    command: npm start
+    ports:
+      - 8080:8080
+    depends_on:
+      - enfercuidarte-db
+  enfercuidarte-db:
+    image: mysql
+    ports:
+      - 3500:3306
+    env_file:
+      - .env.db
+    volumes:
+      - db:/var/lib/mysql
+volumes:
+  db:
