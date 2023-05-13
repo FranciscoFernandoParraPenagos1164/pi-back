@@ -1,14 +1,15 @@
 version: '3.9'
 services:
-  enfercuidarte-back-end:
+  enfercuidarte_back_end:
     build: .
     command: npm start
     ports:
       - 8080:8080
     depends_on:
-      - enfercuidarte-db
-  enfercuidarte-db:
+      - enfercuidarte_db
+  enfercuidarte_db:
     image: mysql
+    command: --default-authentication-plugin=mysql_native_password
     ports:
       - 3500:3306
     env_file:
