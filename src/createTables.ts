@@ -9,7 +9,7 @@ export default function createTables() {
     segundo_nombre varchar(15),
     primer_apellido varchar(15) not null,
     segundo_apellido varchar(15) not null,
-    tipo_documento varchar(15) not null check(tipo_documento in('registro civil', 'targeta de identidad', 'cedula de ciudadania', 'cedula de extranjeria')),
+    tipo_documento varchar(30) not null check(tipo_documento in('registro civil', 'targeta de identidad', 'cedula de ciudadania', 'cedula de extranjeria')),
     documento_identidad varchar(15) not null unique,
     PRIMARY KEY (cod_cliente)
   )`)
@@ -22,7 +22,7 @@ export default function createTables() {
     segundo_nombre varchar(15),
     primer_apellido varchar(15) not null,
     segundo_apellido varchar(15) not null,
-    tipo_documento varchar(15) not null check(tipo_documento in('registro civil', 'targeta de identidad', 'cedula de ciudadania', 'cedula de extranjeria')),
+    tipo_documento varchar(30) not null check(tipo_documento in('registro civil', 'targeta de identidad', 'cedula de ciudadania', 'cedula de extranjeria')),
     documento_identidad varchar(15) not null unique,
     PRIMARY KEY (cod_paciente)
   )`)
@@ -45,7 +45,7 @@ export default function createTables() {
     segundo_nombre varchar(15),
     primer_apellido varchar(15) not null,
     segundo_apellido varchar(15) not null,
-    tipo_documento varchar(15) not null check(tipo_documento in('registro civil', 'targeta de identidad', 'cedula de ciudadania', 'cedula de extranjeria')),
+    tipo_documento varchar(30) not null check(tipo_documento in('registro civil', 'targeta de identidad', 'cedula de ciudadania', 'cedula de extranjeria')),
     documento_identidad varchar(15) not null unique,
     PRIMARY KEY (cod_enfermero)
   )`)

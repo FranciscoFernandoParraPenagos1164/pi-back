@@ -18,6 +18,7 @@ import serverError from './middlewares/serverError'
 config()
 
 createTables()
+
 const app: Express = express()
 const PORT = process.env.APPLICATION_PORT || 3050
 

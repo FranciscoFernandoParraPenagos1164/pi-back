@@ -12,7 +12,8 @@ export default function sqlError(
   const validErrors = [
     'ER_DUP_ENTRY',
     'ER_NO_DEFAULT_FOR_FIELD',
-    'ER_TRUNCATED_WRONG_VALUE'
+    'ER_TRUNCATED_WRONG_VALUE',
+    'ER_DATA_TOO_LONG'
   ]
 
   if (!validErrors.includes(code)) {
