@@ -4,17 +4,23 @@ import { v4 as uuidv4 } from 'uuid'
 import { pool } from '../connection'
 import { Validations } from '../utilities/validations'
 import { IControllers } from '../interfaces/IController'
-import { IVisits } from '../interfaces/IVisits'
 
-export default class Visits implements IControllers {
-  public get(_req: Request, res: Response, next: NextFunction): void {
-    const query = 'SELECT * FROM visita'
+export default class QueryController<T> implements IControllers {
+  constructor(
+    protected table: string,
+    protected rowToCompare: string,
+    protected newRowCodName: string,
+    protected excludedPostPropertyes: Array<string>,
+    protected excludedPatchPropertyes: Array<string>
+  ) {}
+
+  get(_req: Request, res: Response, next: NextFunction): void {
+    const query = `SELECT * FROM ${this.table}`
 
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`listing all visits at ${new Date().toLocaleString()}`)
-        const rows: Array<IVisits> = response[0]
+        const rows: Array<T> = response[0]
 
         if (rows.length === 0) {
           res.status(204).end()
@@ -30,13 +36,12 @@ export default class Visits implements IControllers {
   public getById(_req: Request, res: Response, next: NextFunction): void {
     const { id } = _req.params
 
-    const query = `SELECT * FROM visita WHERE cod_visita = '${id}'`
+    const query = `SELECT * FROM ${this.table} WHERE ${this.rowToCompare} = '${id}'`
 
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`searching visit ${id} at ${new Date().toLocaleString()}`)
-        const rows: Array<IVisits> = response[0]
+        const rows: Array<T> = response[0]
 
         if (rows.length === 0) {
           res.status(204).end()
@@ -44,19 +49,18 @@ export default class Visits implements IControllers {
         }
 
         res.status(200)
-        res.json(rows)
+        res.json(rows[0])
       })
       .catch(next)
   }
 
   public post(_req: Request, res: Response, next: NextFunction): void {
-    const body: IVisits = { ..._req.body }
+    const body: T = { ..._req.body }
 
-    const isValid: Boolean = Validations.validateBody<IVisits>(
-      Visits.validatePropertyes,
+    const isValid: Boolean = Validations.validateBody<T>(
       body,
       next,
-      ['cod_visita']
+      this.excludedPostPropertyes
     )
 
     if (!isValid) {
@@ -64,28 +68,29 @@ export default class Visits implements IControllers {
     }
 
     const id = uuidv4()
-    const newVisit: IVisits = { cod_visita: id, ...body }
-    const query = 'INSERT INTO visita SET ?'
+    const newRow: T = Object.defineProperty(body, this.newRowCodName, {
+      value: id,
+      writable: true,
+      enumerable: true
+    })
+    const query = `INSERT INTO ${this.table} SET ?`
 
     pool
-      .query(query, newVisit)
+      .query(query, newRow)
       .then(() => {
-        console.log(`creating visit ${id} at ${new Date().toLocaleString()}`)
-
         res.status(201)
-        res.json(newVisit)
+        res.json(newRow)
       })
       .catch(next)
   }
 
   public patch(_req: Request, res: Response, next: NextFunction): void {
-    const body: IVisits = { ..._req.body }
+    const body: T = { ..._req.body }
 
-    const isValid: Boolean = Validations.validateBody<IVisits>(
-      Visits.validatePropertyes,
+    const isValid: Boolean = Validations.validateBody<T>(
       body,
       next,
-      ['cod_visita', 'cod_cita']
+      this.excludedPatchPropertyes
     )
 
     if (!isValid) {
@@ -100,13 +105,11 @@ export default class Visits implements IControllers {
         `${key} = ${typeof value === 'string' ? `'${value}'` : `${value}`}`
     )
 
-    const query = `UPDATE visita SET ${values} WHERE cod_visita = '${id}'`
+    const query = `UPDATE ${this.table} SET ${values} WHERE ${this.rowToCompare} = '${id}'`
 
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`updating visit ${id} at ${new Date().toLocaleString()}`)
-
         const { changedRows } = response[0]
 
         if (changedRows === 0) {
@@ -123,13 +126,11 @@ export default class Visits implements IControllers {
   public delete(_req: Request, res: Response, next: NextFunction): void {
     const { id } = _req.params
 
-    const query = `DELETE FROM visita WHERE cod_visita = '${id}'`
+    const query = `DELETE FROM ${this.table} WHERE ${this.rowToCompare} = '${id}'`
 
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`deleting visit ${id} at ${new Date().toLocaleString()}`)
-
         const { affectedRows } = response[0]
 
         if (affectedRows <= 0) {
@@ -141,10 +142,4 @@ export default class Visits implements IControllers {
       })
       .catch(next)
   }
-
-  private static validatePropertyes: Array<string> = [
-    'cod_cita',
-    'hora_entrada',
-    'hora_salida'
-  ]
 }

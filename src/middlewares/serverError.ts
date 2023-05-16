@@ -9,19 +9,6 @@ export default function serverError(
 ): void {
   const { code, message } = err
 
-  const validErrors = [
-    'PROPERTY_UNCHANGEABLE',
-    'NO_VALID_PROPERTY',
-    'NO_EMPTY_PROPERTY',
-    'NO_EMPTY_CONTENT',
-    'NO_FREE_NURSE'
-  ]
-
-  if (!validErrors.includes(code)) {
-    next(err)
-    return
-  }
-
   res.status(400)
   res.json({ code, message })
 }

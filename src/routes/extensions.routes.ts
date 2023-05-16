@@ -1,13 +1,30 @@
 import { IRouter, Router } from 'express'
-import Extensions from '../controllers/extensions.controllers'
+import QueryController from '../controllers/query.controllers'
+import { IExtensions } from '../interfaces/IExtensions'
 
 const router: IRouter = Router()
-const extension = new Extensions()
+const extensions = new QueryController<IExtensions>(
+  'extencion_cita',
+  'cod_extencion_cita',
+  'cod_extencion_cita',
+  ['cod_extencion_cita'],
+  ['cod_extencion_cita', 'cod_cita', 'tiempo_extendido']
+)
 
-router.get('/', extension.get)
-router.get('/:id', extension.getById)
-router.post('/', extension.post)
-router.patch('/:id', extension.patch)
-router.delete('/:id', extension.delete)
+router.get('/', (req, res, next) => {
+  extensions.get(req, res, next)
+})
+router.get('/:id', (req, res, next) => {
+  extensions.getById(req, res, next)
+})
+router.post('/', (req, res, next) => {
+  extensions.post(req, res, next)
+})
+router.patch('/:id', (req, res, next) => {
+  extensions.patch(req, res, next)
+})
+router.delete('/:id', (req, res, next) => {
+  extensions.delete(req, res, next)
+})
 
 export default router
