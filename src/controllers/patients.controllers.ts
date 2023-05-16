@@ -82,12 +82,9 @@ export default class Patients implements IControllers {
   public post(_req: Request, res: Response, next: NextFunction): void {
     const body: IPatients = { ..._req.body }
 
-    const isValid: Boolean = Validations.validateBody<IPatients>(
-      Patients.validatePropertyes,
-      body,
-      next,
-      ['cod_paciente']
-    )
+    const isValid: Boolean = Validations.validateBody<IPatients>(body, next, [
+      'cod_paciente'
+    ])
 
     if (!isValid) {
       return
@@ -97,8 +94,6 @@ export default class Patients implements IControllers {
     const newPatient: IPatients = { cod_paciente: id, ...body }
     delete newPatient.condiciones_medicas
     const conditions: Array<string> = _req.body.condiciones_medicas
-
-    console.log(conditions)
 
     const query = 'INSERT INTO paciente SET ?'
 
@@ -135,12 +130,10 @@ export default class Patients implements IControllers {
   public patch(_req: Request, res: Response, next: NextFunction): void {
     const body: IPatients = { ..._req.body }
 
-    const isValid: Boolean = Validations.validateBody<IPatients>(
-      Patients.validatePropertyes,
-      body,
-      next,
-      ['cod_paciente', 'documento_identidad']
-    )
+    const isValid: Boolean = Validations.validateBody<IPatients>(body, next, [
+      'cod_paciente',
+      'documento_identidad'
+    ])
 
     if (!isValid) {
       return

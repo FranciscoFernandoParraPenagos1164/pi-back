@@ -56,7 +56,6 @@ export default class MedicalConditions implements IControllers {
     const body: IMedicalConditions = { ..._req.body }
 
     const isValid: Boolean = Validations.validateBody<IMedicalConditions>(
-      this.validatePropertyes,
       body,
       next,
       ['cod_condicion_medica']
@@ -90,7 +89,6 @@ export default class MedicalConditions implements IControllers {
     const body: IMedicalConditions = { ..._req.body }
 
     const isValid: Boolean = Validations.validateBody<IMedicalConditions>(
-      this.validatePropertyes,
       body,
       next,
       ['cod_condicion_medica', 'cod_paciente']

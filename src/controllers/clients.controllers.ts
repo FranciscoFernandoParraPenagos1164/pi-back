@@ -1,155 +1,144 @@
-import { Request, Response, NextFunction } from 'express'
-import { RowDataPacket } from 'mysql2'
-import { v4 as uuidv4 } from 'uuid'
-import { pool } from '../connection'
-import { Validations } from '../utilities/validations'
-import { IControllers } from '../interfaces/IController'
+// import { Request, Response, NextFunction } from 'express'
+// import { RowDataPacket } from 'mysql2'
+// import { v4 as uuidv4 } from 'uuid'
+// import { pool } from '../connection'
+// import { Validations } from '../utilities/validations'
+// import { IControllers } from '../interfaces/IController'
 import { IClient } from '../interfaces/IClients'
+import QueryController from './query.controllers'
 
-export default class Clients implements IControllers {
-  public get(_req: Request, res: Response, next: NextFunction): void {
-    const query = 'SELECT * FROM cliente'
 
-    pool
-      .query(query)
-      .then((response: RowDataPacket) => {
-        console.log(`listing all clients at ${new Date().toLocaleString()}`)
-        const rows: Array<IClient> = response[0]
+// export default class Clients implements IControllers {
+//   public get(_req: Request, res: Response, next: NextFunction): void {
+//     const query = 'SELECT * FROM cliente'
 
-        if (rows.length === 0) {
-          res.status(204).end()
-          return
-        }
+//     pool
+//       .query(query)
+//       .then((response: RowDataPacket) => {
+//         console.log(`listing all clients at ${new Date().toLocaleString()}`)
+//         const rows: Array<IClient> = response[0]
 
-        res.status(200)
-        res.json(rows)
-      })
-      .catch(next)
-  }
+//         if (rows.length === 0) {
+//           res.status(204).end()
+//           return
+//         }
 
-  public getById(_req: Request, res: Response, next: NextFunction): void {
-    const { id } = _req.params
+//         res.status(200)
+//         res.json(rows)
+//       })
+//       .catch(next)
+//   }
 
-    const query = `SELECT * FROM cliente WHERE documento_identidad = '${id}'`
+//   public getById(_req: Request, res: Response, next: NextFunction): void {
+//     const { id } = _req.params
 
-    pool
-      .query(query)
-      .then((response: RowDataPacket) => {
-        console.log(`searching client ${id} at ${new Date().toLocaleString()}`)
-        const rows: Array<IClient> = response[0]
+//     const query = `SELECT * FROM cliente WHERE documento_identidad = '${id}'`
 
-        if (rows.length === 0) {
-          res.status(204).end()
-          return
-        }
+//     pool
+//       .query(query)
+//       .then((response: RowDataPacket) => {
+//         console.log(`searching client ${id} at ${new Date().toLocaleString()}`)
+//         const rows: Array<IClient> = response[0]
 
-        res.status(200)
-        res.json(rows)
-      })
-      .catch(next)
-  }
+//         if (rows.length === 0) {
+//           res.status(204).end()
+//           return
+//         }
 
-  public post(_req: Request, res: Response, next: NextFunction): void {
-    const body: IClient = { ..._req.body }
+//         res.status(200)
+//         res.json(rows)
+//       })
+//       .catch(next)
+//   }
 
-    const isValid: Boolean = Validations.validateBody<IClient>(
-      Clients.validatePropertyes,
-      body,
-      next,
-      ['cod_cliente']
-    )
+//   public post(_req: Request, res: Response, next: NextFunction): void {
+//     const body: IClient = { ..._req.body }
 
-    if (!isValid) {
-      return
-    }
+//     const isValid: Boolean = Validations.validateBody<IClient>(
+//       body,
+//       next,
+//       ['cod_cliente']
+//     )
 
-    const id = uuidv4()
-    const newClient: IClient = { cod_cliente: id, ...body }
-    const query = 'INSERT INTO cliente SET ?'
+//     if (!isValid) {
+//       return
+//     }
 
-    pool
-      .query(query, newClient)
-      .then(() => {
-        console.log(`creating client ${id} at ${new Date().toLocaleString()}`)
+//     const id = uuidv4()
+//     const newClient: IClient = { cod_cliente: id, ...body }
+//     const query = 'INSERT INTO cliente SET ?'
 
-        res.status(201)
-        res.json(newClient)
-      })
-      .catch(next)
-  }
+//     pool
+//       .query(query, newClient)
+//       .then(() => {
+//         console.log(`creating client ${id} at ${new Date().toLocaleString()}`)
 
-  public patch(_req: Request, res: Response, next: NextFunction): void {
-    const body: IClient = { ..._req.body }
+//         res.status(201)
+//         res.json(newClient)
+//       })
+//       .catch(next)
+//   }
 
-    const isValid: Boolean = Validations.validateBody<IClient>(
-      Clients.validatePropertyes,
-      body,
-      next,
-      ['cod_cliente', 'documento_identidad']
-    )
+//   public patch(_req: Request, res: Response, next: NextFunction): void {
+//     const body: IClient = { ..._req.body }
 
-    if (!isValid) {
-      return
-    }
+//     const isValid: Boolean = Validations.validateBody<IClient>(
+//       body,
+//       next,
+//       ['cod_cliente', 'documento_identidad']
+//     )
 
-    const { id } = _req.params
-    const newInfo = Object.entries(body)
+//     if (!isValid) {
+//       return
+//     }
 
-    const values = newInfo.map(
-      ([key, value]) =>
-        `${key} = ${typeof value === 'string' ? `'${value}'` : `${value}`}`
-    )
+//     const { id } = _req.params
+//     const newInfo = Object.entries(body)
 
-    const query = `UPDATE cliente SET ${values} WHERE documento_identidad = '${id}'`
+//     const values = newInfo.map(
+//       ([key, value]) =>
+//         `${key} = ${typeof value === 'string' ? `'${value}'` : `${value}`}`
+//     )
 
-    pool
-      .query(query)
-      .then((response: RowDataPacket) => {
-        console.log(`updating client ${id} at ${new Date().toLocaleString()}`)
+//     const query = `UPDATE cliente SET ${values} WHERE documento_identidad = '${id}'`
 
-        const { changedRows } = response[0]
+//     pool
+//       .query(query)
+//       .then((response: RowDataPacket) => {
+//         console.log(`updating client ${id} at ${new Date().toLocaleString()}`)
 
-        if (changedRows === 0) {
-          res.status(204).end()
-          return
-        }
+//         const { changedRows } = response[0]
 
-        res.status(200)
-        res.json(body)
-      })
-      .catch(next)
-  }
+//         if (changedRows === 0) {
+//           res.status(204).end()
+//           return
+//         }
 
-  public delete(_req: Request, res: Response, next: NextFunction): void {
-    const { id } = _req.params
+//         res.status(200)
+//         res.json(body)
+//       })
+//       .catch(next)
+//   }
 
-    const query = `DELETE FROM cliente WHERE documento_identidad = '${id}'`
+//   public delete(_req: Request, res: Response, next: NextFunction): void {
+//     const { id } = _req.params
 
-    pool
-      .query(query)
-      .then((response: RowDataPacket) => {
-        console.log(`deleting client ${id} at ${new Date().toLocaleString()}`)
+//     const query = `DELETE FROM cliente WHERE documento_identidad = '${id}'`
 
-        const { affectedRows } = response[0]
+//     pool
+//       .query(query)
+//       .then((response: RowDataPacket) => {
+//         console.log(`deleting client ${id} at ${new Date().toLocaleString()}`)
 
-        if (affectedRows <= 0) {
-          res.status(204).end()
-          return
-        }
+//         const { affectedRows } = response[0]
 
-        res.status(200).end()
-      })
-      .catch(next)
-  }
+//         if (affectedRows <= 0) {
+//           res.status(204).end()
+//           return
+//         }
 
-  private static validatePropertyes: Array<string> = [
-    'email',
-    'celular',
-    'primer_nombre',
-    'segundo_nombre',
-    'primer_apellido',
-    'segundo_apellido',
-    'tipo_documento',
-    'documento_identidad'
-  ]
-}
+//         res.status(200).end()
+//       })
+//       .catch(next)
+//   }
+// }

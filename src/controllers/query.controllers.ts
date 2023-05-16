@@ -4,17 +4,23 @@ import { v4 as uuidv4 } from 'uuid'
 import { pool } from '../connection'
 import { Validations } from '../utilities/validations'
 import { IControllers } from '../interfaces/IController'
-import { IExtensions } from '../interfaces/IExtensions'
 
-export default class Extensions implements IControllers {
-  public get(_req: Request, res: Response, next: NextFunction): void {
-    const query = 'SELECT * FROM extencion_cita'
+export default class QueryController<T> implements IControllers {
+  constructor(
+    private table: string,
+    private rowToCompare: string,
+    private excludedPostPropertyes: Array<string>,
+    private excludedPatchPropertyes: Array<string>,
+    private newRowCodName: string
+  ) {}
+
+  get(_req: Request, res: Response, next: NextFunction): void {
+    const query = `SELECT * FROM ${this.table}`
 
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`listing all extensions at ${new Date().toLocaleString()}`)
-        const rows: Array<IExtensions> = response[0]
+        const rows: Array<T> = response[0]
 
         if (rows.length === 0) {
           res.status(204).end()
@@ -30,15 +36,12 @@ export default class Extensions implements IControllers {
   public getById(_req: Request, res: Response, next: NextFunction): void {
     const { id } = _req.params
 
-    const query = `SELECT * FROM extencion_cita WHERE cod_extencion_cita = '${id}'`
+    const query = `SELECT * FROM ${this.table} WHERE ${this.rowToCompare} = '${id}'`
 
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(
-          `searching extension ${id} at ${new Date().toLocaleString()}`
-        )
-        const rows: Array<IExtensions> = response[0]
+        const rows: Array<T> = response[0]
 
         if (rows.length === 0) {
           res.status(204).end()
@@ -52,12 +55,12 @@ export default class Extensions implements IControllers {
   }
 
   public post(_req: Request, res: Response, next: NextFunction): void {
-    const body: IExtensions = { ..._req.body }
+    const body: T = { ..._req.body }
 
-    const isValid: Boolean = Validations.validateBody<IExtensions>(
+    const isValid: Boolean = Validations.validateBody<T>(
       body,
       next,
-      ['cod_extencion_cita']
+      this.excludedPostPropertyes
     )
 
     if (!isValid) {
@@ -65,29 +68,26 @@ export default class Extensions implements IControllers {
     }
 
     const id = uuidv4()
-    const newExtension: IExtensions = { cod_extencion_cita: id, ...body }
-    const query = 'INSERT INTO extencion_cita SET ?'
+    const newRow: T = { ...body }
+    Object.defineProperty(newRow, this.newRowCodName, { value: id })
+    const query = `INSERT INTO ${this.table} SET ?`
 
     pool
-      .query(query, newExtension)
+      .query(query, newRow)
       .then(() => {
-        console.log(
-          `creating extension ${id} at ${new Date().toLocaleString()}`
-        )
-
         res.status(201)
-        res.json(newExtension)
+        res.json(newRow)
       })
       .catch(next)
   }
 
   public patch(_req: Request, res: Response, next: NextFunction): void {
-    const body: IExtensions = { ..._req.body }
+    const body: T = { ..._req.body }
 
-    const isValid: Boolean = Validations.validateBody<IExtensions>(
+    const isValid: Boolean = Validations.validateBody<T>(
       body,
       next,
-      ['cod_extension_cita']
+      this.excludedPatchPropertyes
     )
 
     if (!isValid) {
@@ -102,15 +102,11 @@ export default class Extensions implements IControllers {
         `${key} = ${typeof value === 'string' ? `'${value}'` : `${value}`}`
     )
 
-    const query = `UPDATE extencion_cita SET ${values} WHERE cod_extencion_cita = '${id}'`
+    const query = `UPDATE ${this.table} SET ${values} WHERE ${this.rowToCompare} = '${id}'`
 
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(
-          `updating extension ${id} at ${new Date().toLocaleString()}`
-        )
-
         const { changedRows } = response[0]
 
         if (changedRows === 0) {
@@ -127,14 +123,12 @@ export default class Extensions implements IControllers {
   public delete(_req: Request, res: Response, next: NextFunction): void {
     const { id } = _req.params
 
-    const query = `DELETE FROM extencion_cita WHERE cod_extencion_cita = '${id}'`
+    const query = `DELETE FROM ${this.table} WHERE ${this.rowToCompare} = '${id}'`
 
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(
-          `deleting extension ${id} at ${new Date().toLocaleString()}`
-        )
+        console.log(`deleting client ${id} at ${new Date().toLocaleString()}`)
 
         const { affectedRows } = response[0]
 
@@ -147,9 +141,4 @@ export default class Extensions implements IControllers {
       })
       .catch(next)
   }
-
-  private static validatePropertyes: Array<string> = [
-    'cod_cita',
-    'tiempo_extendido'
-  ]
 }

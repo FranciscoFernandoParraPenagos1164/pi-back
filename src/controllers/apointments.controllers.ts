@@ -79,7 +79,6 @@ export default class Apointments implements IControllers {
     const body: IApointments = { ..._req.body }
 
     const isValid: Boolean = Validations.validateBody<IApointments>(
-      Apointments.validatePropertyes,
       body,
       next,
       ['cod_cita']
@@ -127,7 +126,6 @@ export default class Apointments implements IControllers {
     const body: IApointments = { ..._req.body }
 
     const isValid: Boolean = Validations.validateBody<IApointments>(
-      Apointments.validatePropertyes,
       body,
       next,
       ['cod_cita', 'cod_cliente', 'cod_paciente']

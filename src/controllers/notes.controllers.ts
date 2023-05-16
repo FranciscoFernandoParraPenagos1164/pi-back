@@ -53,7 +53,6 @@ export default class Clients implements IControllers {
     const body: INotes = { ..._req.body }
 
     const isValid: Boolean = Validations.validateBody<INotes>(
-      Clients.validatePropertyes,
       body,
       next,
       ['cod_nota']
@@ -82,7 +81,6 @@ export default class Clients implements IControllers {
     const body: INotes = { ..._req.body }
 
     const isValid: Boolean = Validations.validateBody<INotes>(
-      Clients.validatePropertyes,
       body,
       next,
       ['cod_nota', 'cod_visita']

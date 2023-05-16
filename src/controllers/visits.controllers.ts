@@ -53,7 +53,6 @@ export default class Visits implements IControllers {
     const body: IVisits = { ..._req.body }
 
     const isValid: Boolean = Validations.validateBody<IVisits>(
-      Visits.validatePropertyes,
       body,
       next,
       ['cod_visita']
@@ -82,7 +81,6 @@ export default class Visits implements IControllers {
     const body: IVisits = { ..._req.body }
 
     const isValid: Boolean = Validations.validateBody<IVisits>(
-      Visits.validatePropertyes,
       body,
       next,
       ['cod_visita', 'cod_cita']

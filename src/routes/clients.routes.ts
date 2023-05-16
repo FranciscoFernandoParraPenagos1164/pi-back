@@ -1,13 +1,30 @@
 import { IRouter, Router } from 'express'
-import Clients from '../controllers/clients.controllers'
+import QueryController from '../controllers/query.controllers'
+import { IClient } from '../interfaces/IClients'
 
 const router: IRouter = Router()
-const clients = new Clients()
+const clients = new QueryController<IClient>(
+  'cliente',
+  'documento_identidad',
+  ['cod_cliente'],
+  ['cod_cliente', 'documento_identidad'],
+  'cod_cliente'
+)
 
-router.get('/', clients.get)
-router.get('/:id', clients.getById)
-router.post('/', clients.post)
-router.patch('/:id', clients.patch)
-router.delete('/:id', clients.delete)
+router.get('/', (req, res, next) => {
+  clients.get(req, res, next)
+})
+router.get('/:id', (req, res, next) => {
+  clients.getById(req, res, next)
+})
+router.post('/', (req, res, next) => {
+  clients.post(req, res, next)
+})
+router.patch('/:id', (req, res, next) => {
+  clients.patch(req, res, next)
+})
+router.delete('/:id', (req, res, next) => {
+  clients.delete(req, res, next)
+})
 
 export default router

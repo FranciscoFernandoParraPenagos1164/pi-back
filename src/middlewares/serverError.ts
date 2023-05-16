@@ -8,6 +8,7 @@ export default function serverError(
   next: NextFunction
 ): void {
   const { code, message } = err
+  console.error(err)
 
   res.status(400)
   res.json({ code, message })

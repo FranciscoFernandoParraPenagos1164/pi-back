@@ -53,7 +53,6 @@ export default class Nurses implements IControllers {
     const body: INurses = { ..._req.body }
 
     const isValid: Boolean = Validations.validateBody<INurses>(
-      Nurses.validatePropertyes,
       body,
       next,
       ['cod_enfermero']
@@ -82,7 +81,6 @@ export default class Nurses implements IControllers {
     const body: INurses = { ..._req.body }
 
     const isValid: Boolean = Validations.validateBody<INurses>(
-      Nurses.validatePropertyes,
       body,
       next,
       ['cod_enfermero', 'documento_identidad']
