@@ -9,7 +9,6 @@ export class Validations {
   }
 
   public static validateBody<T>(
-    validatePropertyes: Array<string>,
     body: T,
     next: NextFunction,
     excludePropertyes?: Array<string>
@@ -23,14 +22,6 @@ export class Validations {
         next({
           code: 'NO_VALID_PROPERTY',
           message: `the key ${key} is managed by the server or is not modificable`
-        })
-        return false
-      }
-
-      if (!validatePropertyes.includes(key)) {
-        next({
-          code: 'NO_VALID_PROPERTY',
-          message: `the key ${key} is not valid`
         })
         return false
       }

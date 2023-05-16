@@ -6,8 +6,8 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      - enfercuidarte_db
-  enfercuidarte_db:
+      - enfercuidarte_MySQL
+  enfercuidarte_MySQL:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     ports:

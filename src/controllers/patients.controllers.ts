@@ -14,8 +14,6 @@ export default class Patients implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`listing all patients at ${new Date().toLocaleString()}`)
-
         const rows = response[0]
 
         return rows
@@ -52,8 +50,6 @@ export default class Patients implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`searching patient ${id} at ${new Date().toLocaleString()}`)
-
         const rows: Array<IPatients> = response[0]
         return rows
       })
@@ -82,12 +78,9 @@ export default class Patients implements IControllers {
   public post(_req: Request, res: Response, next: NextFunction): void {
     const body: IPatients = { ..._req.body }
 
-    const isValid: Boolean = Validations.validateBody<IPatients>(
-      Patients.validatePropertyes,
-      body,
-      next,
-      ['cod_paciente']
-    )
+    const isValid: Boolean = Validations.validateBody<IPatients>(body, next, [
+      'cod_paciente'
+    ])
 
     if (!isValid) {
       return
@@ -98,15 +91,10 @@ export default class Patients implements IControllers {
     delete newPatient.condiciones_medicas
     const conditions: Array<string> = _req.body.condiciones_medicas
 
-    console.log(conditions)
-
     const query = 'INSERT INTO paciente SET ?'
 
     pool
       .query(query, newPatient)
-      .then(() => {
-        console.log(`creating patient ${id} at ${new Date().toLocaleString()}`)
-      })
       .then(() => {
         if (!conditions || conditions.length === 0) {
           res.status(201)
@@ -135,12 +123,10 @@ export default class Patients implements IControllers {
   public patch(_req: Request, res: Response, next: NextFunction): void {
     const body: IPatients = { ..._req.body }
 
-    const isValid: Boolean = Validations.validateBody<IPatients>(
-      Patients.validatePropertyes,
-      body,
-      next,
-      ['cod_paciente', 'documento_identidad']
-    )
+    const isValid: Boolean = Validations.validateBody<IPatients>(body, next, [
+      'cod_paciente',
+      'documento_identidad'
+    ])
 
     if (!isValid) {
       return
@@ -155,13 +141,9 @@ export default class Patients implements IControllers {
 
     const query = `UPDATE paciente SET ${values} WHERE documento_identidad = '${id}'`
 
-    console.log(query)
-
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`updating patient ${id} at ${new Date().toLocaleString()}`)
-
         const { changedRows } = response[0]
 
         if (changedRows === 0) {
@@ -183,8 +165,6 @@ export default class Patients implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`deleting patient ${id} at ${new Date().toLocaleString()}`)
-
         const { affectedRows } = response[0]
 
         if (affectedRows <= 0) {
@@ -196,16 +176,4 @@ export default class Patients implements IControllers {
       })
       .catch(next)
   }
-
-  private static validatePropertyes: Array<string> = [
-    'edad',
-    'direccion',
-    'primer_nombre',
-    'segundo_nombre',
-    'primer_apellido',
-    'segundo_apellido',
-    'tipo_documento',
-    'documento_identidad',
-    'condiciones_medicas'
-  ]
 }
