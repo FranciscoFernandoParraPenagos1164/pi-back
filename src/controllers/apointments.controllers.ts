@@ -14,7 +14,6 @@ export default class Apointments implements IControllers {
     pool
       .query(query)
       .then(async (response: RowDataPacket) => {
-        console.log(`listing all apointments at ${new Date().toLocaleString()}`)
         const rows: Array<IApointments> = response[0]
 
         if (rows.length === 0) {
@@ -36,9 +35,6 @@ export default class Apointments implements IControllers {
     pool
       .query(query)
       .then(async (response: RowDataPacket) => {
-        console.log(
-          `searching apointments ${id} at ${new Date().toLocaleString()}`
-        )
         const rows: Array<IApointments> = response[0]
 
         if (rows.length === 0) {
@@ -111,10 +107,6 @@ export default class Apointments implements IControllers {
         const query = 'INSERT INTO cita SET ?'
 
         pool.query(query, newApointment).then(() => {
-          console.log(
-            `creating apointment ${id} at ${new Date().toLocaleString()}`
-          )
-
           res.status(201)
           res.json(newApointment)
         })
@@ -148,10 +140,6 @@ export default class Apointments implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(
-          `updating apointment ${id} at ${new Date().toLocaleString()}`
-        )
-
         const { changedRows } = response[0]
 
         if (changedRows === 0) {
@@ -173,10 +161,6 @@ export default class Apointments implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(
-          `deleting apointment ${id} at ${new Date().toLocaleString()}`
-        )
-
         const { affectedRows } = response[0]
 
         if (affectedRows <= 0) {
@@ -188,14 +172,4 @@ export default class Apointments implements IControllers {
       })
       .catch(next)
   }
-
-  private static validatePropertyes: Array<string> = [
-    'cod_enfermero',
-    'cod_cliente',
-    'cod_paciente',
-    'fecha',
-    'hora',
-    'razon_cita',
-    'dias'
-  ]
 }

@@ -19,7 +19,7 @@ config()
 createTables()
 
 const app: Express = express()
-const PORT = process.env.APPLICATION_PORT || 3050
+const PORT = process.env.APPLICATION_PORT || 8080
 
 app.use(validateAPIKEY)
 app.use(express.json())
@@ -27,7 +27,7 @@ app.use(validateEmptyBody)
 app.use(indexRoutes)
 app.use('/clients', clientsRoutes)
 app.use('/patients', patientsRoutes)
-app.use('/medical-conditions', medicalConditions)
+app.use('/conditions', medicalConditions)
 app.use('/nurses', nursesRoutes)
 app.use('/apointments', apointmentsRoutes)
 app.use('/extensions', extensionsRoutes)

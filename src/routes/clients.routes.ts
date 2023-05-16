@@ -6,9 +6,9 @@ const router: IRouter = Router()
 const clients = new QueryController<IClient>(
   'cliente',
   'documento_identidad',
+  'cod_cliente',
   ['cod_cliente'],
-  ['cod_cliente', 'documento_identidad'],
-  'cod_cliente'
+  ['cod_cliente', 'documento_identidad']
 )
 
 router.get('/', (req, res, next) => {

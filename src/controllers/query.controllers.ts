@@ -7,11 +7,11 @@ import { IControllers } from '../interfaces/IController'
 
 export default class QueryController<T> implements IControllers {
   constructor(
-    private table: string,
-    private rowToCompare: string,
-    private excludedPostPropertyes: Array<string>,
-    private excludedPatchPropertyes: Array<string>,
-    private newRowCodName: string
+    protected table: string,
+    protected rowToCompare: string,
+    protected newRowCodName: string,
+    protected excludedPostPropertyes: Array<string>,
+    protected excludedPatchPropertyes: Array<string>
   ) {}
 
   get(_req: Request, res: Response, next: NextFunction): void {
@@ -49,7 +49,7 @@ export default class QueryController<T> implements IControllers {
         }
 
         res.status(200)
-        res.json(rows)
+        res.json(rows[0])
       })
       .catch(next)
   }
@@ -68,8 +68,11 @@ export default class QueryController<T> implements IControllers {
     }
 
     const id = uuidv4()
-    const newRow: T = { ...body }
-    Object.defineProperty(newRow, this.newRowCodName, { value: id })
+    const newRow: T = Object.defineProperty(body, this.newRowCodName, {
+      value: id,
+      writable: true,
+      enumerable: true
+    })
     const query = `INSERT INTO ${this.table} SET ?`
 
     pool
@@ -128,8 +131,6 @@ export default class QueryController<T> implements IControllers {
     pool
       .query(query)
       .then((response: RowDataPacket) => {
-        console.log(`deleting client ${id} at ${new Date().toLocaleString()}`)
-
         const { affectedRows } = response[0]
 
         if (affectedRows <= 0) {
