@@ -1,6 +1,7 @@
 import express = require('express')
 import { Express } from 'express'
 import { config } from 'dotenv'
+import { CORS } from './middlewares/CORS'
 import validateEmptyBody from './middlewares/EmptyBodyValidation'
 import validateAPIKEY from './middlewares/validateAPIKEY'
 import createTables from './createTables'
@@ -21,6 +22,7 @@ createTables()
 const app: Express = express()
 const PORT = process.env.APPLICATION_PORT || 8080
 
+app.use(CORS)
 app.use(validateAPIKEY)
 app.use(express.json())
 app.use(validateEmptyBody)
