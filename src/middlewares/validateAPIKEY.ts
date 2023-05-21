@@ -7,7 +7,7 @@ export default function validateAPIKEY(
   _res: Response,
   next: NextFunction
 ) {
-  const API_KEY = process.env.API_KEY || 'enfercuidarte123'
+  const API_KEY = process.env.API_KEY
   const QUERY_API_KEY = _req.query.api_key
 
   if (API_KEY !== QUERY_API_KEY) {

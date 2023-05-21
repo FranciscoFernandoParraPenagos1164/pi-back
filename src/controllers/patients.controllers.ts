@@ -63,14 +63,16 @@ export default class Patients implements IControllers {
         const query = 'SELECT * FROM condicion_medica WHERE cod_paciente = ?'
         const id: string = patient.cod_paciente
 
-        pool.query(query, id).then(([row]) => {
-          const conditions: Array<string> = row.map(
-            (condition: IMedicalConditions) => condition.descripcion
-          )
+        pool
+          .query(query, id)
+          .then(([row]: Array<Array<IMedicalConditions>>) => {
+            const conditions: Array<string> = row.map(
+              (condition: IMedicalConditions) => condition.descripcion
+            )
 
-          res.status(200)
-          res.json({ ...patient, condiciones_medicas: conditions })
-        })
+            res.status(200)
+            res.json({ ...patient, condiciones_medicas: conditions })
+          })
       })
       .catch(next)
   }
