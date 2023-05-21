@@ -2,12 +2,22 @@ import { createPool, PoolOptions } from 'mysql2'
 import { config } from 'dotenv'
 config()
 
-const POOL_CONFIG: PoolOptions = {
-  host: process.env.DATABASE_HOST || 'enfercuidarte_MySQL',
-  user: process.env.DATABASE_USER || 'root',
-  port: parseInt(process.env.DATABASE_PORT),
-  password: process.env.DATABASE_PASSWORD || 'enfercuidarte1164*',
-  database: process.env.DATABASE_NAME || 'enfercuidartedb'
+const {
+  DATABASE_HOST,
+  DATABASE_USER,
+  DATABASE_PORT,
+  DATABASE_PASSWORD,
+  DATABASE_NAME
+} = process.env
+
+let POOL_CONFIG: PoolOptions
+
+POOL_CONFIG = {
+  host: DATABASE_HOST,
+  user: DATABASE_USER,
+  port: Number.parseInt(DATABASE_PORT),
+  password: DATABASE_PASSWORD,
+  database: DATABASE_NAME
 }
 
 export const pool = createPool(POOL_CONFIG).promise()
