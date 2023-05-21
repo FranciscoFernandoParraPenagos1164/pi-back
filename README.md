@@ -10,39 +10,11 @@ Para probar el funcionamiento de nuestro proyecto, podemos realizar la descarga 
 
 - al descargar el archivo se debe descomprimir y luego de esto habriremos una terminal y nos dirigiremos al directorio de nuestro proyecto.
 
-## Ejecucion con docker compose
+## Configurando el proyecto
 
-para iniciar una ejecucion automatizada en contenedores de docker ejecutaremos el siguiente comando y esta correra en el puerto 3050
+para poder ejecutar la aplicacion se requiere de una configuracion para ello crearemos dos archivos en la ruta raiz del proyecto en el que declararemos unas variables de entorno para que la aplicacion funcione las cuales son
 
-```
-docker compose up
-```
-
-## Ejecucion manual
-
-si queremos hacer una ejecucion manual primero ejecutaremos el siguiente comando para instalar las dependencias de la aplicacion
-
-```
-npm install
-```
-
-con estoy ya estaran las librerias necesarias para el funcionamiento de la app, ahora procederemos a iniciarlo, existen dos comandos para iniciarlo
-
-modo desarrollo
-
-```
-npm run dev
-```
-
-modo produccion
-
-```
-npm run start
-```
-
-## Ejecucion personalizada
-
-La aplicacion ya viene con una configuracion por defecto para la base de datos y el servidor sin embargo podemos cambiar esta configuracion, para modificar el funcionamiento del servidor se debe crear un archivo llamado **.env** en la raiz del proyecto y declarar las siguientes variables de entorno
+### .env
 
 - APPLICATION_PORT = el puerto en el que queremos que se ejecute nuestra aplicacion
 - DATABASE_HOST = el host de nuestra base de datos mysql
@@ -52,10 +24,40 @@ La aplicacion ya viene con una configuracion por defecto para la base de datos y
 - DATABASE_NAME = el nombre de nuestra base de datos
 - API_KEY = es la clave que se debe especificar al hacer peticiones al servidor
 
-y para modificar el funcionamiento de la base de datos se debe modificar el archivo **.en.db** el cual tiene las dos variables de entorno
+### .env.db
 
-- MYSQL_ROOT_PASSWORD = la contraseña de la cuenta raiz de MySQL
-- MYSQL_DATABASE = el nombre de la base de datos en el contenedor MySQL
+- MYSQL_ROOT_PASSWORD = es la contraseña de la cuenta raiz del servidor MySQL
+- MYSQL_DATABASE = el nombre de la base de datos que se creara en el servidor MySQL en la cueta raiz
+
+## Ejecucion con docker compose
+
+para iniciar una ejecucion automatizada en contenedores de docker ejecutaremos el siguiente comando y esta correra en el puerto 3050.
+
+```
+docker compose up
+```
+
+## Ejecucion manual
+
+si queremos hacer una ejecucion manual primero ejecutaremos el siguiente comando para instalar las dependencias de la aplicacion.
+
+```
+npm install
+```
+
+con estoy ya estaran las librerias necesarias para el funcionamiento de la app, ahora procederemos a iniciarlo, existen dos comandos para iniciarlo.
+
+### modo desarrollo.
+
+```
+npm run dev
+```
+
+### modo produccion.
+
+```
+npm run start
+```
 
 ## Haciendo peticiones
 

@@ -1,0 +1,10 @@
+dist
+node_modules
+.Dockerignore
+.eslintrc.json
+.gitignore
+.prettierrc.json
+docker-compose.yaml
+Dockerfile
+package-lock.json
+README.md
